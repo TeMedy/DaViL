@@ -1,5 +1,6 @@
 {
     "Alireza Mirzaee": "Team Tower",
+    "Ericsson Activities": "",
     "Hossein Seyedmehdi": "Team Tower",
     "Johanna Nicoletta": "Team Tower",
     "Ronald Casselman": "Team Warehouse",

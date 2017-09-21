@@ -4,6 +4,6 @@
     "Hossein Seyedmehdi": "Team Tower",
     "Johanna Nicoletta": "Team Tower",
     "Ronald Casselman": "Team Warehouse",
-    "Team Tower": "",
-    "Team Warehouse": ""
+    "Team Tower": "Team Tower",
+    "Team Warehouse": "Team Warehouse"
 }

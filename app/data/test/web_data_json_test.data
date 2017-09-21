@@ -1,18 +1,25 @@
 {
     "date": [
         {
-            "amount": "$506.79",
+            "amount": "$531.79",
             "facebookId": "1633682560",
             "isTeamCaptain": "True",
             "name": "Johanna Nicoletta",
             "pageUrl": "https://secure.e2rm.com/registrant/FundraisingPage.aspx?registrationID=3697209&langPref=en-CA&Referrer=https%3a%2f%2fsecure.e2rm.com%2fregistrant%2fsearch.aspx%3feventid%3d210107%26langpref%3den-CA"
         },
         {
-            "amount": "$272.00",
+            "amount": "$322.00",
             "facebookId": "",
             "isTeamCaptain": "False",
             "name": "Ericsson Activities",
             "pageUrl": "https://secure.e2rm.com/registrant/FundraisingPage.aspx?registrationID=3877056&langPref=en-CA&Referrer=https%3a%2f%2fsecure.e2rm.com%2fregistrant%2fsearch.aspx%3feventid%3d210107%26langpref%3den-CA"
+        },
+        {
+            "amount": "$100.00",
+            "facebookId": "923824164329915",
+            "isTeamCaptain": "False",
+            "name": "Ronald Casselman",
+            "pageUrl": "https://secure.e2rm.com/registrant/FundraisingPage.aspx?registrationID=3945039&langPref=en-CA&Referrer=https%3a%2f%2fsecure.e2rm.com%2fregistrant%2fsearch.aspx%3feventid%3d210107%26langpref%3den-CA"
         },
         {
             "amount": "$25.00",
@@ -27,6 +34,20 @@
             "isTeamCaptain": "False",
             "name": "Hossein Seyedmehdi",
             "pageUrl": "https://secure.e2rm.com/registrant/FundraisingPage.aspx?registrationID=3855399&langPref=en-CA&Referrer=https%3a%2f%2fsecure.e2rm.com%2fregistrant%2fsearch.aspx%3feventid%3d210107%26langpref%3den-CA"
+        },
+        {
+            "amount": "$0.00",
+            "facebookId": "",
+            "isTeamCaptain": "False",
+            "name": "Team Tower",
+            "pageUrl": "https://secure.e2rm.com/registrant/FundraisingPage.aspx?registrationID=3945110&langPref=en-CA&Referrer=https%3a%2f%2fsecure.e2rm.com%2fregistrant%2fsearch.aspx%3feventid%3d210107%26langpref%3den-CA"
+        },
+        {
+            "amount": "$0.00",
+            "facebookId": "",
+            "isTeamCaptain": "False",
+            "name": "Team Warehouse",
+            "pageUrl": "https://secure.e2rm.com/registrant/FundraisingPage.aspx?registrationID=3945105&langPref=en-CA&Referrer=https%3a%2f%2fsecure.e2rm.com%2fregistrant%2fsearch.aspx%3feventid%3d210107%26langpref%3den-CA"
         }
     ]
 }
