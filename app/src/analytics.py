@@ -5,7 +5,7 @@ Created on Sep 9, 2017
 '''
 
 import utils
-import os
+import os, json
 import datetime
 import copy
 from utils import get_raw_data_path
@@ -53,7 +53,7 @@ def get_highest_donation(supporters_data, window_days, a_base_day = None):
   if a_base_day: 
     base_day = str2date(a_base_day)
   cutoff_day = base_day - datetime.timedelta(days = window_days)
-  days_before_cutoff = [day for day in supporters_data if str2date(day) < cutoff_day]
+  days_before_cutoff = [day for day in supporters_data if str2date(day) <= cutoff_day]
   # Find the day 'YYYY-MM-DD' right before the window day
   day_before_cutoff = ''
   if len(days_before_cutoff) > 0: 
@@ -102,12 +102,14 @@ def get_donation_by_division(team_ledger, members_divisions):
   for member in team:
     member_name = member['name']
     if member_name in members_divisions:
-      divis_of_member = members_divisions[member_name]
-      money_raised_by_member = float(member['amount'].replace("$", ""))
-      if divis_of_member in money_raised_by_div: 
-        money_raised_by_div[divis_of_member] += money_raised_by_member
-      else:
-        money_raised_by_div[divis_of_member] = money_raised_by_member
+      # make sure the member division is not empty
+      if members_divisions[member_name]:
+        divis_of_member = members_divisions[member_name]
+        money_raised_by_member = float(member['amount'].replace("$", ""))
+        if divis_of_member in money_raised_by_div: 
+          money_raised_by_div[divis_of_member] += money_raised_by_member
+        else:
+          money_raised_by_div[divis_of_member] = money_raised_by_member
   #print(json.dumps(money_raised_by_div))
   return money_raised_by_div.items()
 
@@ -162,8 +164,6 @@ if __name__ == "__main__":
   # Test donations by division 
   fname = os.path.join(utils.get_raw_data_path(), 'members_divisions.txt')
   members_divisions = utils.load_from_file(fname)
-  fname = os.path.join(utils.get_raw_data_path(), 'ericsson_divisions.txt')
-  ericsson_divisions = utils.load_from_file(fname)
   dbd = get_donation_by_division(member_data, members_divisions)
   print(dbd)
   

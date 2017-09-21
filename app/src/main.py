@@ -57,17 +57,17 @@ if __name__ == "__main__":
   for window_days in window_days_list:
     highest_donations.append([window_days[0], window_days[1], 
                               analytics.get_highest_donation(supporters_ledger, window_days[1])])
-
   # get data for donations per divisions 
   fname = os.path.join(utils.get_raw_data_path(), 'members_divisions.txt')
   members_divisions = utils.load_from_file(fname)
-  fname = os.path.join(utils.get_raw_data_path(), 'ericsson_divisions.txt')
-  ericsson_divisions = utils.load_from_file(fname)
   dbd = analytics.get_donation_by_division(team_ledger, members_divisions)
   # Historical donation 
   doantions_over_time = analytics.get_historical_donaitons(team_ledger)
-  # Get division of all team members 
+  # Get division of all team members && update the members_divisions with new members 
   mem_div = analytics.get_all_members_division(team_ledger, members_divisions)
+  fname = os.path.join(utils.get_raw_data_path(), 'members_divisions.txt')
+  utils.save_to_file(fname, mem_div)
+  # create new file for the admins
   fname = os.path.join(utils.get_admin_data_path(), 'members_divisions.txt')
   utils.save_to_file(fname, mem_div)
   
