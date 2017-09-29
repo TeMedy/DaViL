@@ -53,7 +53,7 @@ if __name__ == "__main__":
   #
   print("Performing analytics...")
   highest_donations = []
-  window_days_list = [("Yesterday", 2), ("Last week", 7), ("Last month", 30), ("Overall in 2017", 365)]
+  window_days_list = [("Yesterday", 2), ("Last 7 days", 7), ("Last 30 days", 30), ("Overall in 2017", 365)]
   for window_days in window_days_list:
     highest_donations.append([window_days[0], window_days[1], 
                               analytics.get_highest_donation(supporters_ledger, window_days[1])])
@@ -84,7 +84,7 @@ if __name__ == "__main__":
   file_name_time_series = os.path.join(utils.get_raw_data_path(), 'time_series.png')
   visualizer.generate_time_series(doantions_over_time, file_name_time_series)
   # 
-  out_file_name = 'LTN daily, ' + time.strftime('%b %d, %Y') + '.pptx'
+  out_file_name = 'LTN_daily_stats.pptx'# + time.strftime('%b %d, %Y') + '.pptx'
   fname = os.path.join(utils.get_visual_data_path(), out_file_name)
   visualizer.generate_ppt(fname, highest_donations = highest_donations, 
                  image_total_fund_raised = file_name_time_series, 

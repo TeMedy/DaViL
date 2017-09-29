@@ -1,3 +1,6 @@
-*/5 * * * *   /usr/local/bin/python /app/src/main.py >>/var/log/cron.log 2>&1
+#*/5 * * * *   /usr/local/bin/python /app/src/main.py >>/var/log/cron.log 2>&1
+# minute 5 of hour 3
+5 3 * * *   /usr/local/bin/python /app/src/main.py >>/var/log/cron.log 2>&1
+#
 #* * * * *   /usr/local/bin/python /app/src/quick_main.py >>/var/log/cron.log 2>&1
 #
