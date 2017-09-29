@@ -42,6 +42,8 @@ def get_member_page(url):
   return: 
     :str : a str representing the page
   '''
+  if not url: 
+    return
   session = Session()
   r = session.get(url)
   return r.text
@@ -78,6 +80,8 @@ def parse_member_page(html_page):
     :list : a list of dictionaries for supporters in the format of [{'name':'a_name', ...}, {...}, ...] 
   '''
   supporters = []
+  if not html_page: 
+    return supporters
   soup = BeautifulSoup(html_page, 'html.parser')
   timeline_items = soup.find_all(class_="timeline-item")
   #print(timeline_items[0])

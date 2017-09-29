@@ -4,7 +4,7 @@ Created on Aug 29, 2017
 @author: Hossein
 '''
 import argparse
-import os 
+import os, time
 from email_handler import send_email
 import utils # import get_raw_data_path, get_visual_data_path
 import tqdm
@@ -74,23 +74,30 @@ if __name__ == "__main__":
   #
   # Visualization
   #
+  #logo file: 
+  file_name_logo = os.path.join(utils.get_raw_data_path(), 'logo_LTN.png')
+  file_name_template_pptx = os.path.join(utils.get_raw_data_path(), 'template.pptx')
+  #
   file_name_by_div = os.path.join(utils.get_raw_data_path(), 'divisions.png')
   visualizer.generate_bar_chart(dbd,  file_name_by_div) 
   #
   file_name_time_series = os.path.join(utils.get_raw_data_path(), 'time_series.png')
   visualizer.generate_time_series(doantions_over_time, file_name_time_series)
   # 
-  fname = os.path.join(utils.get_visual_data_path(), 'results.pptx')
+  out_file_name = 'LTN daily, ' + time.strftime('%b %d, %Y') + '.pptx'
+  fname = os.path.join(utils.get_visual_data_path(), out_file_name)
   visualizer.generate_ppt(fname, highest_donations = highest_donations, 
                  image_total_fund_raised = file_name_time_series, 
-                 image_fund_by_division = file_name_by_div)
+                 image_fund_by_division = file_name_by_div, 
+                 logo=file_name_logo, 
+                 file_template_presentation= file_name_template_pptx)
   #
-  # Sending email
+  # Send email
   #
   if args.send_email:
     print("Sending e-mail...")
     send_email(utils.get_raw_data_path(), subject = "LTN -- raw data", body="Do not reply.\n")
-    send_email(utils.get_visual_data_path(), subject = "Today's LTN stats and charts", body="Automatically generated email.\n")
+    send_email(utils.get_visual_data_path(), subject = "Today's LTN stats and charts", body="Automatically generated email.\n\n")
     if analytics.is_new_member(team_ledger):
       send_email(utils.get_admin_data_path(), subject = "New LTN Member!", body="Please update the team of the new member.")
 

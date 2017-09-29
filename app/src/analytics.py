@@ -8,7 +8,6 @@ import utils
 import os, json
 import datetime
 import copy
-from utils import get_raw_data_path
 
 def str2date(date_str):
   '''
@@ -82,8 +81,13 @@ def get_highest_donation(supporters_data, window_days, a_base_day = None):
       # of supporters on the last day to get the donations within the days 
       # determined by the window_days. But since these are lists of 
       # dictionaries, the subtraction is not straight forward. 
-      if supp not in supporters_before_cutoff: 
-        supporters_within_window.append(supp)
+      if supp not in supporters_before_cutoff:
+        # exclude if no amount in dollar
+        try: 
+          d = float(supp['amount_dollar'].replace('$', '')) 
+          supporters_within_window.append(supp)
+        except: 
+          pass 
   # find the highest donor:
   if len(supporters_within_window) > 0:
     # remove the dollar sign and compare all donation amounts to find the max

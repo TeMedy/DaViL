@@ -5,3 +5,6 @@ __pycache__
 secrets.env
 quick_main.py
 *.log
+*.pptx
+*.png
+

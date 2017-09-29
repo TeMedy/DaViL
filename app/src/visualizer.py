@@ -13,12 +13,13 @@ import matplotlib
 # Force matplotlib to not use any Xwindows backend.
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
+from pylab import gca
 from datetime import datetime as dt 
 from pptx import Presentation
 from pptx.util import Inches
 
 
-IMG_QUALITY = 200 # dpi
+IMG_QUALITY = 400 # dpi
 
 def generate_bar_chart(label_value_pairs, file_name = None):
   '''
@@ -40,10 +41,10 @@ def generate_bar_chart(label_value_pairs, file_name = None):
   plt.bar(x, y, facecolor='#ff9999', edgecolor='white', ) # 9999ff ff9999
   # Write values 
   for x1,y1 in zip(x, y):
-      plt.text(x1, y1, '$%.0f' % y1, ha='center', va= 'bottom', fontsize = 25)
+      plt.text(x1, y1, '$%.0f' % y1, ha='center', va= 'bottom', fontsize = 30)
   # Adjust the y size so that there is room for writings
   plt.ylim(0, 1.2 * max(y) ) 
-  plt.xticks(x, labels, fontsize = 15)
+  plt.xticks(x, labels, fontsize = 20)
   # no y axis ticks
   plt.yticks([])
   # plt.title("LTN - Division Competition Results", fontsize = 20)
@@ -80,6 +81,9 @@ def generate_time_series(time_value_pairs, file_name):
       spine.set_color('none')
   #remove y ticks
   plt.yticks([])
+  # change the font size of x asix: 
+  ax = gca()
+  ax.xaxis.set_tick_params(labelsize=14)
   # write the data point values on them
   nlabels = 3
   xy_list = list(zip(x, y))
@@ -90,29 +94,44 @@ def generate_time_series(time_value_pairs, file_name):
     index_list.append(len(xy_list) - 1)
     for i in index_list: 
       x1, y1 = xy_list[i]
-      plt.text(x1, y1, '$%.0f' % y1, ha='right', va= 'bottom', fontsize = 15)
+      plt.text(x1, y1, '$%.0f' % y1, ha='right', va= 'bottom', fontsize = 20)
   else:
     for x1, y1 in xy_list : 
-      plt.text(x1, y1, '$%.0f' % y1, ha='right', va= 'bottom', fontsize = 15)
+      plt.text(x1, y1, '$%.0f' % y1, ha='right', va= 'bottom', fontsize = 20)
     
   plt.gcf().autofmt_xdate()
   plt.ylim(0.5 * min(y), 1.1 * max(y) ) 
-  # plt.title("LTN - Total fund raised", fontsize=20)
+  # plt.title("Total fund raised", fontsize=20)
   plt.savefig(file_name, dpi=IMG_QUALITY)
 
-def generate_ppt(result_file_name, highest_donations = None, 
-                 image_total_fund_raised = None, image_fund_by_division = None):
+def generate_ppt(result_file_name, 
+                 highest_donations = None, 
+                 image_total_fund_raised = None, 
+                 image_fund_by_division = None,
+                 logo=None, 
+                 file_template_presentation = None):
   '''
   Create the PowerPoint 
   '''
-  prs = Presentation()
+  #logo coordinates: 
+  logo_left = Inches(7)
+  logo_top = Inches(0.3)
+  logo_height = Inches(2)
+
+  #get the seed presentation 
+  if file_template_presentation: 
+    prs = Presentation(file_template_presentation)
+  else: 
+    prs = Presentation()
   # Create the title page 
+  '''
   title_slide_layout = prs.slide_layouts[0]
   slide = prs.slides.add_slide(title_slide_layout)
   title = slide.shapes.title
   subtitle = slide.placeholders[1]
   title.text = "Join Team Ericsson Today!"
   subtitle.text = "LightTheNight.ca"
+  '''
   
   # Add the bullet slide
   if highest_donations: 
@@ -120,7 +139,7 @@ def generate_ppt(result_file_name, highest_donations = None,
     slide = prs.slides.add_slide(bullet_slide_layout)
     shapes = slide.shapes
     title_shape = shapes.title
-    title_shape.text = 'Thanks to LTN Top Supporters'
+    title_shape.text = 'Thanks to Our\nTop Supporters'
     body_shape = shapes.placeholders[1]
     tf = body_shape.text_frame
   
@@ -142,6 +161,10 @@ def generate_ppt(result_file_name, highest_donations = None,
           p = tf.add_paragraph()
           p.text = '{} said: "{}" '.format(highest_donation['supporter_name'], highest_donation['message'])
           p.level = 2
+      # add logo: 
+      if logo: 
+        pic = slide.shapes.add_picture(logo, logo_left, logo_top, height=logo_height)
+
 
   # add image for historical data
   if image_total_fund_raised: 
@@ -149,11 +172,13 @@ def generate_ppt(result_file_name, highest_donations = None,
     slide = prs.slides.add_slide(blank_slide_layout)
     shapes = slide.shapes
     title_shape = shapes.title
-    title_shape.text = 'LTN - Total Fund Raised'
-    left = Inches(1)
-    top = Inches(1.2)
-    height = Inches(6)
+    title_shape.text = 'Total Fund Raised\nby Ericsson Ottawa'
+    left = Inches(2.5)
+    top = Inches(2)
+    height = Inches(5.5)
     pic = slide.shapes.add_picture(image_total_fund_raised, left, top, height=height)
+    if logo: 
+      pic = slide.shapes.add_picture(logo, logo_left, logo_top, height=logo_height)
 
   # add image for bar chart
   if image_fund_by_division: 
@@ -161,11 +186,13 @@ def generate_ppt(result_file_name, highest_donations = None,
     slide = prs.slides.add_slide(blank_slide_layout)
     shapes = slide.shapes
     title_shape = shapes.title
-    title_shape.text = 'LTN - Competition Results'
-    left = Inches(1)
-    top = Inches(1.3)
+    title_shape.text = 'Fundraising Showdown'
+    left = Inches(2.5)
+    top = Inches(1.5)
     height = Inches(5.75)
     pic = slide.shapes.add_picture(image_fund_by_division, left, top, height=height)
+    if logo: 
+      pic = slide.shapes.add_picture(logo, logo_left, logo_top, height=logo_height)
 
   # Save the powerpoint
   prs.save(result_file_name)
@@ -186,14 +213,19 @@ if __name__ == "__main__":
   
   # generating ppt presentation
   print("generating ppt presentation...")
+  from utils import get_raw_data_path
   supporters_data = {'2017-09-08': {'Johanna Nicoletta': [{'supporter_name': 'ericssoncommunity', 'message': '', 'amount_dollar': '229.41', 'time': 'Jul 19, 2017 12:00 AM'}, {'supporter_name': 'ericssoncommunity', 'message': '', 'amount_dollar': '27.38', 'time': 'May 12, 2017 12:00 AM'}, {'supporter_name': 'Anonymous Donor', 'message': '', 'amount_dollar': '250.00', 'time': 'May 1, 2017 8:45 AM'}], 'Ericsson Activities': [{'supporter_name': 'Foosball Champion', 'message': '', 'amount_dollar': '78.00', 'time': 'Aug 30, 2017 9:35 PM'}, {'supporter_name': 'Bottle Drive -- Aug 8', 'message': '', 'amount_dollar': '194.00', 'time': 'Aug 9, 2017 10:07 AM'}], 'Hossein Seyedmehdi': [], 'Alireza Mirzaee': [{'supporter_name': 'Hossein', 'message': '', 'amount_dollar': '25.00', 'time': 'Aug 9, 2017 10:18 AM'}]}, '2017-09-05': {'Johanna Nicoletta': [{'supporter_name': 'ericssoncommunity', 'message': '', 'amount_dollar': '27.38', 'time': 'May 12, 2017 12:00 AM'}, {'supporter_name': 'Anonymous Donor', 'message': '', 'amount_dollar': '250.00', 'time': 'May 1, 2017 8:45 AM'}], 'Ericsson Activities': [{'supporter_name': 'Foosball Champion', 'message': '', 'amount_dollar': '78.00', 'time': 'Aug 30, 2017 9:35 PM'}, {'supporter_name': 'Bottle Drive -- Aug 8', 'message': '', 'amount_dollar': '194.00', 'time': 'Aug 9, 2017 10:07 AM'}], 'Hossein Seyedmehdi': [], 'Alireza Mirzaee': [{'supporter_name': 'Hossein', 'message': '', 'amount_dollar': '25.00', 'time': 'Aug 9, 2017 10:18 AM'}]}, '2017-09-09': {'Johanna Nicoletta': [{'supporter_name': 'ericssoncommunity', 'message': '', 'amount_dollar': '229.41', 'time': 'Jul 19, 2017 12:00 AM'}, {'supporter_name': 'ericssoncommunity', 'message': '', 'amount_dollar': '27.38', 'time': 'May 12, 2017 12:00 AM'}, {'supporter_name': 'Anonymous Donor', 'message': '', 'amount_dollar': '250.00', 'time': 'May 1, 2017 8:45 AM'}], 'Ericsson Activities': [{'supporter_name': 'Foosball Champion', 'message': '', 'amount_dollar': '78.00', 'time': 'Aug 30, 2017 9:35 PM'}, {'supporter_name': 'Bottle Drive -- Aug 8', 'message': '', 'amount_dollar': '194.00', 'time': 'Aug 9, 2017 10:07 AM'}], 'Hossein Seyedmehdi': [], 'Alireza Mirzaee': [{'supporter_name': 'Hossein', 'message': '', 'amount_dollar': '25.00', 'time': 'Aug 9, 2017 10:18 AM'}]}, '2017-09-06': {'Johanna Nicoletta': [{'supporter_name': 'ericssoncommunity', 'message': '', 'amount_dollar': '27.38', 'time': 'May 12, 2017 12:00 AM'}, {'supporter_name': 'Anonymous Donor', 'message': '', 'amount_dollar': '250.00', 'time': 'May 1, 2017 8:45 AM'}], 'Ericsson Activities': [{'supporter_name': 'Foosball Champion', 'message': '', 'amount_dollar': '78.00', 'time': 'Aug 30, 2017 9:35 PM'}, {'supporter_name': 'Bottle Drive -- Aug 8', 'message': '', 'amount_dollar': '194.00', 'time': 'Aug 9, 2017 10:07 AM'}], 'Hossein Seyedmehdi': [], 'Alireza Mirzaee': [{'supporter_name': 'Hossein', 'message': '', 'amount_dollar': '25.00', 'time': 'Aug 9, 2017 10:18 AM'}]}, '2017-09-03': {'Johanna Nicoletta': [{'supporter_name': 'ericssoncommunity', 'message': '', 'amount_dollar': '27.38', 'time': 'May 12, 2017 12:00 AM'}, {'supporter_name': 'Anonymous Donor', 'message': '', 'amount_dollar': '250.00', 'time': 'May 1, 2017 8:45 AM'}], 'Ericsson Activities': [{'supporter_name': 'Foosball Champion', 'message': '', 'amount_dollar': '78.00', 'time': 'Aug 30, 2017 9:35 PM'}, {'supporter_name': 'Bottle Drive -- Aug 8', 'message': '', 'amount_dollar': '194.00', 'time': 'Aug 9, 2017 10:07 AM'}], 'Hossein Seyedmehdi': [], 'Alireza Mirzaee': [{'supporter_name': 'Hossein', 'message': '', 'amount_dollar': '25.00', 'time': 'Aug 9, 2017 10:18 AM'}]}, '2017-09-07': {'Johanna Nicoletta': [{'supporter_name': 'ericssoncommunity', 'message': '', 'amount_dollar': '27.38', 'time': 'May 12, 2017 12:00 AM'}, {'supporter_name': 'Anonymous Donor', 'message': '', 'amount_dollar': '250.00', 'time': 'May 1, 2017 8:45 AM'}], 'Ericsson Activities': [{'supporter_name': 'Foosball Champion', 'message': '', 'amount_dollar': '78.00', 'time': 'Aug 30, 2017 9:35 PM'}, {'supporter_name': 'Bottle Drive -- Aug 8', 'message': '', 'amount_dollar': '194.00', 'time': 'Aug 9, 2017 10:07 AM'}], 'Hossein Seyedmehdi': [], 'Alireza Mirzaee': [{'supporter_name': 'Hossein', 'message': '', 'amount_dollar': '25.00', 'time': 'Aug 9, 2017 10:18 AM'}]}}
 
   file_name_pptx = os.path.join(get_test_path(), 'resutls.pptx')
+  file_name_template_pptx = os.path.join(get_raw_data_path(), 'template.pptx')
+  file_name_logo = os.path.join(get_raw_data_path(), 'logo_LTN.png')
   highest_donations = [['Yesterday', 2, {'team_member': 'Hossein Seyedmehdi', 'amount_dollar': '20.00', 'message': 'Good Job!', 'time': 'May 2, 2017 8:45 AM', 'supporter_name': 'SomeONE'}], ['Last week', 7, None], ['Last 30 days', 30, {'team_member': 'Johanna Nicoletta', 'amount_dollar': '250.00', 'message': '', 'time': 'May 1, 2017 8:45 AM', 'supporter_name': 'Anonymous Donor'}], ['Overall in 2017', 365, {'team_member': 'Johanna Nicoletta', 'amount_dollar': '250.00', 'message': '', 'time': 'May 1, 2017 8:45 AM', 'supporter_name': 'Anonymous Donor'}]]
   generate_ppt(file_name_pptx, 
                highest_donations= highest_donations,
                image_total_fund_raised = file_name_time_series, 
-               image_fund_by_division = file_name_by_divisions)
+               image_fund_by_division = file_name_by_divisions, 
+               logo = file_name_logo,
+               file_template_presentation= file_name_template_pptx)
   
   print('Done!')
   

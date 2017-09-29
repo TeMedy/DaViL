@@ -4,8 +4,9 @@ services:
         build: ./app/
         image: ltneric/ltn2017:latest
         volumes:
-        #  - $PWD/app:/app
-          - $PWD:/var/log/
+          #- $PWD/app:/app
+          - $PWD/log:/var/log/
+          #- $PWD/app/data/raw_data/:/app/data/raw_data/
         environment:
           - DEBUG="True"
         env_file:
