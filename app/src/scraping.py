@@ -10,7 +10,7 @@ from requests import Session
 from bs4 import BeautifulSoup
 import json
 from time import gmtime, strftime
-
+from urllib.request import urlretrieve
 
 
 def get_team_members():
@@ -97,3 +97,11 @@ def parse_member_page(html_page):
       d['message'] = supporter_info[4]
     supporters.append(d)
   return supporters
+
+def get_thermometer(file_name):
+  thermometer_url = "https://secure.e2rm.com/registrant/BasicThermometer.aspx?eventid=210107&langpref=en-CA&teamID=738302&isForEmail=0"
+  urlretrieve(thermometer_url, file_name)
+  
+  
+  
+  

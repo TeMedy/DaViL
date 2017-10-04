@@ -29,7 +29,7 @@ def get_sum_donations(team_members):
   sum_donations = 0 
   for member_info in team_members:
     # get the amount field and remove dollar sign  
-    amount = member_info['amount'].replace('$', '')
+    amount = member_info['amount'].replace('$', '').replace(',', '')
     sum_donations += float(amount)
   return sum_donations
 
@@ -109,7 +109,7 @@ def get_donation_by_division(team_ledger, members_divisions):
       # make sure the member division is not empty
       if members_divisions[member_name]:
         divis_of_member = members_divisions[member_name]
-        money_raised_by_member = float(member['amount'].replace("$", ""))
+        money_raised_by_member = float(member['amount'].replace("$", "").replace(',', ''))
         if divis_of_member in money_raised_by_div: 
           money_raised_by_div[divis_of_member] += money_raised_by_member
         else:

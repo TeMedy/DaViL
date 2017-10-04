@@ -31,6 +31,7 @@ def generate_bar_chart(label_value_pairs, file_name = None):
     :list : a list of values for each lable 
     :str : a file_name to save the final result in
   '''
+  label_value_pairs = sorted(label_value_pairs)
   n = len(label_value_pairs)
   x = np.arange(n)
   labels = list(zip(*label_value_pairs))[0]
@@ -44,10 +45,10 @@ def generate_bar_chart(label_value_pairs, file_name = None):
       plt.text(x1, y1, '$%.0f' % y1, ha='center', va= 'bottom', fontsize = 30)
   # Adjust the y size so that there is room for writings
   plt.ylim(0, 1.2 * max(y) ) 
-  plt.xticks(x, labels, fontsize = 20)
+  plt.xticks(x, labels, fontsize = 22)
   # no y axis ticks
   plt.yticks([])
-  # plt.title("LTN - Division Competition Results", fontsize = 20)
+  # plt.title("Fundraising Showdown", fontsize = 30)
   # Remove all the spines except the bottom one 
   # [trick here](https://stackoverflow.com/questions/18968024/how-to-remove-axis-in-pyplot-bar)
   for loc, spine in plt.axes().axes.spines.items(): 
@@ -107,6 +108,7 @@ def generate_time_series(time_value_pairs, file_name):
 def generate_ppt(result_file_name, 
                  highest_donations = None, 
                  image_total_fund_raised = None, 
+                 image_thermometer = None, 
                  image_fund_by_division = None,
                  logo=None, 
                  file_template_presentation = None):
@@ -167,6 +169,7 @@ def generate_ppt(result_file_name,
 
 
   # add image for historical data
+  '''
   if image_total_fund_raised: 
     blank_slide_layout = prs.slide_layouts[1]
     slide = prs.slides.add_slide(blank_slide_layout)
@@ -179,20 +182,30 @@ def generate_ppt(result_file_name,
     pic = slide.shapes.add_picture(image_total_fund_raised, left, top, height=height)
     if logo: 
       pic = slide.shapes.add_picture(logo, logo_left, logo_top, height=logo_height)
+    '''
 
-  # add image for bar chart
-  if image_fund_by_division: 
+  # add slide for thermometer and bar chart on the same slide
+  if image_thermometer or image_fund_by_division: 
     blank_slide_layout = prs.slide_layouts[1]
     slide = prs.slides.add_slide(blank_slide_layout)
     shapes = slide.shapes
-    title_shape = shapes.title
-    title_shape.text = 'Fundraising Showdown'
-    left = Inches(2.5)
-    top = Inches(1.5)
-    height = Inches(5.75)
-    pic = slide.shapes.add_picture(image_fund_by_division, left, top, height=height)
     if logo: 
       pic = slide.shapes.add_picture(logo, logo_left, logo_top, height=logo_height)
+     
+  if image_thermometer: 
+    left = Inches(1)
+    top = Inches(0.35)
+    height = Inches(7)
+    pic = slide.shapes.add_picture(image_thermometer, left, top, height=height)
+    
+  # add image for bar chart
+  if image_fund_by_division: 
+    # title_shape = shapes.title
+    # title_shape.text = 'Fundraising Showdown'
+    left = Inches(5)
+    top = Inches(2)
+    height = Inches(5)
+    pic = slide.shapes.add_picture(image_fund_by_division, left, top, height=height)
 
   # Save the powerpoint
   prs.save(result_file_name)

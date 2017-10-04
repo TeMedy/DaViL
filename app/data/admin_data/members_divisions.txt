@@ -1,13 +1,14 @@
 {
-    "Alireza Mirzaee": "Team Tower",
+    "Alireza Mirzaee": "Tower",
     "Anonymous": "",
-    "Cheryl Bernardo": "Team Tower",
+    "Cheryl Bernardo": "Tower",
     "Ericsson Activities": "",
-    "Helen Vlastakis": "",
-    "Hossein Seyedmehdi": "Team Tower",
-    "Johanna Nicoletta": "Team Tower",
-    "Ronald Casselman": "Team Warehouse",
-    "Sandra Ballarte": "Team Warehouse",
-    "Team Tower": "Team Tower",
-    "Team Warehouse": "Team Warehouse"
+    "Helen Vlastakis": "Warehouse",
+    "Hossein Seyedmehdi": "Tower",
+    "Johanna Nicoletta": "Tower",
+    "Ronald Casselman": "Warehouse",
+    "Sandra Ballarte": "Warehouse",
+    "Siyu Zhou": "Tower",
+    "Team Tower": "Tower",
+    "Team Warehouse": "Warehouse"
 }

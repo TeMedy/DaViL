@@ -47,6 +47,9 @@ if __name__ == "__main__":
   supporters_ledger = utils.load_from_file(supporters_data_file)
   scraping.update_ledger(supporters_ledger, all_supporters)
   utils.save_to_file(supporters_data_file, supporters_ledger)
+  # Get thermometer 
+  file_name_thermometer = os.path.join(utils.get_raw_data_path(), 'thermometer.jpg')
+  scraping.get_thermometer(file_name_thermometer)
 
   #
   # Perform analytics 
@@ -89,6 +92,7 @@ if __name__ == "__main__":
   visualizer.generate_ppt(fname, highest_donations = highest_donations, 
                  image_total_fund_raised = file_name_time_series, 
                  image_fund_by_division = file_name_by_div, 
+                 image_thermometer= file_name_thermometer,
                  logo=file_name_logo, 
                  file_template_presentation= file_name_template_pptx)
   #
