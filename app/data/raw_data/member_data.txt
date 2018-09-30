@@ -412,15 +412,15 @@
             "amount": "$0.00",
             "facebookId": "",
             "isTeamCaptain": "False",
-            "name": "Cinotti Giuseppe",
-            "pageUrl": "https://secure.e2rm.com/registrant/FundraisingPage.aspx?registrationID=4187162&langPref=en-CA&Referrer=%26Referrer%3dhttp%253a%252f%252fwww.lightthenight.ca%252fwalk-locations%252fontario%252fottawa%252f"
+            "name": "Anonymous",
+            "pageUrl": ""
         },
         {
             "amount": "$0.00",
             "facebookId": "",
             "isTeamCaptain": "False",
-            "name": "Anonymous",
-            "pageUrl": ""
+            "name": "Cinotti Giuseppe",
+            "pageUrl": "https://secure.e2rm.com/registrant/FundraisingPage.aspx?registrationID=4187162&langPref=en-CA&Referrer=%26Referrer%3dhttp%253a%252f%252fwww.lightthenight.ca%252fwalk-locations%252fontario%252fottawa%252f"
         },
         {
             "amount": "$0.00",

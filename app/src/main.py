@@ -56,6 +56,8 @@ if __name__ == "__main__":
   # Perform analytics
   #
   print("Performing analytics...")
+  total_amount_raised = analytics.get_sum_donations(team_members)
+  fundrasing_goal = scraping.get_fundraising_goal()
   highest_donations = []
   window_days_list = [("Yesterday", 2), ("Last 7 days", 7), ("Last 30 days", 30), ("Overall in 2017", 365)]
   for window_days in window_days_list:
@@ -83,17 +85,20 @@ if __name__ == "__main__":
   file_name_template_pptx = os.path.join(utils.get_raw_data_path(), 'template.pptx')
   #
   file_name_by_div = os.path.join(utils.get_raw_data_path(), 'divisions.png')
-  visualizer.generate_bar_chart(dbd,  file_name_by_div)
+  visualizer.generate_bar_chart(dbd, file_name_by_div)
   #
   file_name_time_series = os.path.join(utils.get_raw_data_path(), 'time_series.png')
   visualizer.generate_time_series(doantions_over_time, file_name_time_series)
+  # Fundraising progress
+  file_name_fundraising_progress = os.path.join(utils.get_raw_data_path(), 'fundrasing_progress.jpg')
+  visualizer.generate_progress_chart(total_amount_raised, fundrasing_goal, file_name= file_name_fundraising_progress)
   #
   out_file_name = 'LTN_daily_stats.pptx'# + time.strftime('%b %d, %Y') + '.pptx'
   fname = os.path.join(utils.get_visual_data_path(), out_file_name)
   visualizer.generate_ppt(fname, highest_donations = highest_donations,
                  image_total_fund_raised = file_name_time_series,
                  image_fund_by_division = file_name_by_div,
-                 image_thermometer= file_name_thermometer,
+                 image_fundraising_progress= file_name_fundraising_progress,
                  logo=file_name_logo,
                  file_template_presentation= file_name_template_pptx)
   #
@@ -102,8 +107,8 @@ if __name__ == "__main__":
   if args.send_email:
     print("Sending e-mail...")
     send_email(utils.get_raw_data_path(), subject = "LTN -- raw data", body="Do not reply.\n")
-    # send_email(utils.get_visual_data_path(), subject = "Today's LTN stats and charts", body="Automatically generated email.\n\n")
-    # if analytics.is_new_member(team_ledger):
-    #   send_email(utils.get_admin_data_path(), subject = "New LTN Member!", body="Please update the team of the new member.")
+    send_email(utils.get_visual_data_path(), subject = "Today's LTN stats and charts", body="Automatically generated email.\n\n")
+    if analytics.is_new_member(team_ledger):
+      send_email(utils.get_admin_data_path(), subject = "New LTN Member!", body="Please update the team of the new member.")
 
   print("Done!")

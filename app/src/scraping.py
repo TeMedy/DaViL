@@ -11,6 +11,7 @@ from bs4 import BeautifulSoup
 import json
 from time import gmtime, strftime
 from urllib.request import urlretrieve
+import pudb
 
 
 def get_team_members():
@@ -101,3 +102,15 @@ def parse_member_page(html_page):
 def get_thermometer(file_name):
   thermometer_url = "https://secure.e2rm.com/registrant/BasicThermometer.aspx?eventid=210107&langpref=en-CA&teamID=738302&isForEmail=0"
   urlretrieve(thermometer_url, file_name)
+
+def get_fundraising_goal():
+    team_page_url = "https://secure.e2rm.com/registrant/TeamFundraisingPage.aspx?teamID=793375&langPref=en-CA#&panel1-1"
+    page_content = get_member_page(team_page_url)
+    soup = BeautifulSoup(page_content, 'html.parser')
+    goal_tag = soup.find_all(id="ctl00_ctl00_mainContent_bodyContentPlaceHolder_labelFundraisingGoal")
+    goal = goal_tag[0].contents[0]
+    goal = goal.replace('$', ''); goal = goal.replace(',', '')
+    return float(goal)
+
+if __name__ == "__main__":
+    print(get_fundraising_goal())
